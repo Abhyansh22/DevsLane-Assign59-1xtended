@@ -1,0 +1,10 @@
+import React from "react";
+
+
+function Nav(){
+    return (<div className=' h-25 bg-white shadow flex items-center'>
+        <img className="h-20 ml-24" src="https://assets.aboutamazon.com/dims4/default/c7f0d8d/2147483647/strip/true/crop/6110x2047+0+0/resize/645x216!/format/webp/quality/90/?url=https%3A%2F%2Famazon-blogs-brightspot.s3.amazonaws.com%2F2e%2Fd7%2Fac71f1f344c39f8949f48fc89e71%2Famazon-logo-squid-ink-smile-orange.png"/>  
+    </div>)
+}
+
+export default Nav
