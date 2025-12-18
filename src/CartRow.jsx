@@ -1,21 +1,45 @@
-import React, { useState } from 'react'
+import React from "react";
 
-function CartRow(props) {
-    const [quantity , setQuantity]=useState(1)
+function CartRow({ item, onQuantityChange, onRemove }) {
+    const { id, image, desc, price, quantity } = item;
 
-    function handleChange(event){
-        const val = event.target.value;
-        setQuantity(val);
+    function handleQuantityChange(event) {
+        const newQuantity = parseInt(event.target.value, 10);
+
+        if (isNaN(newQuantity) || newQuantity < 1) {
+            onQuantityChange(id, 1);
+        } else {
+            onQuantityChange(id, newQuantity);
+        }
     }
-  return (
-    <div className='flex overflow-hidden md:w-[70vw] items-center border-[1px] mb-[2px] border-gray-300'  >
-      <img className='w-15 h-15 md:w-20 md:h-20 md:ml-[6vw] md:mr-[5vw] ' src={props.image} alt="" />
-      <div className='w-[70px] md:w-auto'><h1 className='mr-2 text-[13px] md:w-[26vw] md:text-xl text-orange-600 md:font-bold '>{props.title}</h1></div>
-      <p className='w-[8vw] font-bold'>${props.price}</p>
-      <input className='ml-10 mr-2 border-[1px] md:mr-[8vw] rounded w-10 h-10 pl-3'value={quantity} onChange={handleChange} type="quantitybar" />
-      <p className='font-bold ml-2 md:m-0'>${quantity*props.price}</p>
-    </div>
-  )
+
+    const priceAsNumber = parseFloat(price);
+    const subtotal = (quantity * priceAsNumber).toFixed(2);
+
+    return (
+        <div className="flex items-center justify-between w-full p-4 border-b border-gray-200 last:border-b-0">
+            <div className="flex items-center w-1/2 md:w-2/5">
+                 <button onClick={() => onRemove(id)} className="text-gray-400 hover:text-red-500 mr-4 font-bold text-xl transition-colors">
+                    &times;
+                </button>
+                <img src={image} className="w-16 h-16 object-cover rounded-md shadow-sm" alt={desc} />
+                <h3 className="text-gray-800 ml-4 font-medium hidden md:block">{desc}</h3>
+            </div>
+            
+            <p className="text-gray-800 w-1/5 text-center">${priceAsNumber.toFixed(2)}</p>
+            <div className="w-1/5 flex justify-center">
+                <input
+                    type="number"
+                    value={quantity}
+                    min="1"
+                    onChange={handleQuantityChange}
+                    className="w-16 px-2 py-1 border-2 border-gray-300 rounded text-center focus:outline-none focus:ring-2 focus:ring-red-400 transition"
+                    aria-label={`Quantity for ${desc}`}
+                />
+            </div>
+            <p className="text-gray-800 w-1/5 text-center font-semibold">${subtotal}</p>
+        </div>
+    );
 }
 
 export default CartRow

@@ -1,33 +1,23 @@
-import React, { useState, useEffect } from 'react'
-import CartRow from './CartRow'
-//import Alldata from './Alldata';
-import cart from './cart';
-import { GetProductData } from './DummyData';
-import { useParams } from 'react-router';
+import React from "react";
+import CartRow from "./CartRow";
 
-
-function CartList(props){
-  const { id } = useParams()
-  const [product, setProduct] = useState({})
-
-
-  useEffect(function () {
-    if (id) {
-      GetProductData(+(id)).then((item) => {
-        setProduct(item)
-        cart.push(item)
-      })
+function CartList({ items, onQuantityChange, onRemove }) {
+    if (!items || items.length === 0) {
+        return <p className="p-8 text-center text-gray-500">Your cart is empty.</p>;
     }
-  }, [id])
-  
-  console.log(cart)
-  return (
-    <div>
-      {cart.map(function (product) {
-        return <CartRow title={product.title} price={product.price} image={product.thumbnail} />
-      })}
-    </div>
-  )
+
+    return (
+        <div className="flex flex-col">
+            {items.map(item => (
+                <CartRow 
+                    key={item.id} 
+                    item={item} 
+                    onQuantityChange={onQuantityChange}
+                    onRemove={onRemove}
+                />
+            ))}
+        </div>
+    );
 }
 
-export default CartList
+export default CartList;
